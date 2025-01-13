@@ -41,7 +41,7 @@ def gather_information(state, input_data):
 
     print("Agent Thoughts: Gathering information for the function")
 
-    prompt = "Gather some information from the user to plan the event by asking a few brief questions."
+    prompt = "Gather some information from the user to plan the event by asking a few brief questions, e.g. type of function."
     prompt += "\nDo not ask very specific questions about the exact venue or exact menu items, as these will be decided later."
     prompt += "\nThe weather forecast will be checked automatically later in the planning process."
 
@@ -218,10 +218,16 @@ def decide_venue(state, input_data):
         for venue_index, venue in enumerate(response_data.venues):
             print(f"{venue_index + 1}. {venue}")
 
-        venue_choice = input("Choose a venue (number)> ")
-        state["venue"] = response_data.venues[int(venue_choice) - 1]
+        print(f"{len(response_data.venues) + 1}. None of the above")
 
-        return "choose_next_step", None
+        venue_choice = int(input("Choose a venue (number)> "))
+
+        if venue_choice <= len(response_data.venues):
+            state["venue"] = response_data.venues[venue_choice - 1]
+            return "choose_next_step", None
+        else:
+            state["venue"] = None
+            return "gather_information", "how to choose a venue"
 
 
 @agent.add_action
@@ -262,10 +268,16 @@ def decide_menu(state, input_data):
         for menu_index, menu in enumerate(response_data.menus):
             print(f"{menu_index + 1}.\n{menu}\n\n")
 
-        menu_choice = input("Choose a menu (number)> ")
-        state["menu"] = response_data.menus[int(menu_choice) - 1].model_dump()
+        print(f"{len(response_data.menus) + 1}. None of the above")
 
-        return "choose_next_step", None
+        menu_choice = int(input("Choose a menu (number)> "))
+
+        if menu_choice <= len(response_data.menus):
+            state["menu"] = response_data.menus[menu_choice - 1].model_dump()
+            return "choose_next_step", None
+        else:
+            state["menu"] = None
+            return "gather_information", "how to choose a menu"
 
 
 @agent.add_action
