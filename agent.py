@@ -1,3 +1,6 @@
+# A class to represent an agent that can run a sequence of actions as a state machine.
+
+
 class Agent:
     def __init__(self, start_action="start", end_action="end"):
         self.actions = {}
