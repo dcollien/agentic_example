@@ -48,7 +48,7 @@ def fabricate_excerpts(state, question):
     prompt += "Question:\n"
     prompt += question
     prompt += "\n\n"
-    prompt += "Come up with some excerpts that may exist in the text that could be relevant to this question. If you're not sure, just make something up."
+    prompt += "Come up with all excerpts that may exist in the text that could be relevant to this question. If you're not sure, just make something up."
     prompt += "\n"
 
     response = request_ai_response(
